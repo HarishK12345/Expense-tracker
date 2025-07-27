@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Expense Tracker - INR</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💰 Personal Expense Tracker</h1>
+            <p>Track your income and expenses in Indian Rupees (₹)</p>
+        </header>
+
+        <!-- Dashboard Cards -->
+        <div class="dashboard">
+            <div class="card income-card">
+                <h3>Total Income</h3>
+                <p class="amount" id="total-income">₹0.00</p>
+            </div>
+            <div class="card expense-card">
+                <h3>Total Expenses</h3>
+                <p class="amount" id="total-expenses">₹0.00</p>
+            </div>
+            <div class="card balance-card">
+                <h3>Net Balance</h3>
+                <p class="amount" id="net-balance">₹0.00</p>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab(event, 'transactions-tab')">Transactions</button>
+            <button class="tab-button" onclick="openTab(event, 'budgets-tab')">Budgets</button>
+            <button class="tab-button" onclick="openTab(event, 'analytics-tab')">Analytics</button>
+        </div>
+
+        <!-- Transactions Tab -->
+        <div id="transactions-tab" class="tab-content active">
+            <div class="section">
+                <h2>Add New Transaction</h2>
+                <form id="transaction-form" class="transaction-form">
+                    <div class="form-group">
+                        <label for="description">Description:</label>
+                        <input type="text" id="description" placeholder="Enter transaction description" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="amount">Amount (₹):</label>
+                            <input type="number" id="amount" step="0.01" placeholder="0.00" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="type">Type:</label>
+                            <select id="type" required>
+                                <option value="">Select Type</option>
+                                <option value="income">Income</option>
+                                <option value="expense">Expense</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="category">Category:</label>
+                            <select id="category" required>
+                                <option value="">Select Category</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="date">Date:</label>
+                            <input type="date" id="date" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Add Transaction</button>
+                </form>
+            </div>
+
+            <div class="section">
+                <h2>Transaction History</h2>
+                <div class="filters">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="filter-type">Filter by Type:</label>
+                            <select id="filter-type" onchange="applyFilters()">
+                                <option value="">All Types</option>
+                                <option value="income">Income</option>
+                                <option value="expense">Expense</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="filter-category">Filter by Category:</label>
+                            <select id="filter-category" onchange="applyFilters()">
+                                <option value="">All Categories</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="search-description">Search Description:</label>
+                            <input type="text" id="search-description" placeholder="Search transactions..." onkeyup="applyFilters()">
+                        </div>
+                        <div class="form-group">
+                            <button type="button" class="btn-secondary" onclick="exportToCSV()">Export CSV</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="transactions-list" id="transactions-list">
+                    <p>No transactions yet. Add your first transaction above.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Budgets Tab -->
+        <div id="budgets-tab" class="tab-content">
+            <div class="section">
+                <h2>Monthly Budget</h2>
+                <form id="budget-form" class="budget-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="budget-category">Category:</label>
+                            <select id="budget-category" required>
+                                <option value="">Select Category</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="budget-amount">Budget Amount (₹):</label>
+                            <input type="number" id="budget-amount" step="0.01" placeholder="0.00" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">Set Budget</button>
+                </form>
+            </div>
+
+            <div class="section">
+                <h2>Budget Overview</h2>
+                <div class="budgets-list" id="budgets-list">
+                    <p>No budgets set yet. Set your first budget above.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Tab -->
+        <div id="analytics-tab" class="tab-content">
+            <div class="section">
+                <h2>Spending Analytics</h2>
+                <div class="charts-container">
+                    <div class="chart-card">
+                        <h3>Expense Breakdown</h3>
+                        <canvas id="expenseChart" width="300" height="300"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Monthly Trends</h3>
+                        <canvas id="trendsChart" width="300" height="200"></canvas>
+                    </div>
+                </div>
+                <div class="summary-stats" id="summary-stats">
+                    <!-- Summary statistics will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
